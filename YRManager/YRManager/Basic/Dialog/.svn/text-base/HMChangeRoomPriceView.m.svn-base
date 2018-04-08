@@ -1,0 +1,189 @@
+//
+//  HMChangeRoomPriceView.m
+//  HotelManager-Pad
+//
+//  Created by kqz on 17/1/17.
+//  Copyright © 2017年 塞米酒店. All rights reserved.
+//
+
+#import "HMChangeRoomPriceView.h"
+#import "LPTextField.h"
+
+@interface HMChangeRoomPriceView()<UITextFieldDelegate>
+
+@property (nonatomic, strong) NSString *price;
+@property (nonatomic, strong) UITextField *priceTf;
+@property (nonatomic, strong) UILabel *warnLab;
+@property (nonatomic, strong) UIButton *leftBtn;
+@property (nonatomic, strong) UIButton *closeBtn;
+
+@end
+
+@implementation HMChangeRoomPriceView
+
++(instancetype)viewWithTitle:(NSString *)title AndPrice:(NSString *)price
+{
+    HMChangeRoomPriceView *view = [HMChangeRoomPriceView viewWithFrame:LPRectMake(312, 79, 400, 280)];
+    view.price = price;
+    
+    UILabel *titleLab = [[UILabel alloc] initWithFrame:LPRectMake(30, 55, 300, 30)];
+    titleLab.text = title;
+    titleLab.textColor = kGrayColor;
+    titleLab.font = kFont(24);
+    [view addSubview:titleLab];
+    
+    UITextField *priceTf = [[UITextField alloc] initWithFrame:LPRectMake(30, 100, 340, 60)];
+    priceTf.text = price;
+    priceTf.layer.borderWidth = 1.0 * kScreenScale;
+    priceTf.layer.borderColor = kSeparatorLineColor.CGColor;
+    priceTf.font = kFont(30);
+    priceTf.keyboardType = UIKeyboardTypeNumberPad;
+    priceTf.textColor = kGreenColor;
+    priceTf.backgroundColor = kColor(247, 248, 249, 1);
+    priceTf.tintColor = kGreenColor;
+    [priceTf addTarget:view action:@selector(changeTextField:) forControlEvents:UIControlEventEditingChanged];
+    priceTf.delegate = view;
+    [priceTf becomeFirstResponder];
+    view.priceTf = priceTf;
+    [view addSubview:priceTf];
+    
+    UIView *labView = [[UILabel alloc] initWithFrame:LPRectMake(0, 0, 25, 60)];
+    labView.backgroundColor = [UIColor clearColor];
+    UILabel *leftLab = [[UILabel alloc] initWithFrame:LPRectMake(0, 21, 25, 25)];
+    leftLab.text = @"￥";
+    leftLab.font = kFont(18);
+    leftLab.textColor = kGreenColor;
+    leftLab.textAlignment = NSTextAlignmentRight;
+    [labView addSubview:leftLab];
+    priceTf.leftView = labView;
+    priceTf.leftViewMode = UITextFieldViewModeAlways;
+    
+    UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeBtn.frame = LPRectMake(0, 0, 50, 60);
+    [closeBtn setImage:[UIImage imageNamed:@"close_big"] forState:UIControlStateNormal];
+    [closeBtn addTarget:view action:@selector(clickCloseBtn:) forControlEvents:UIControlEventTouchUpInside];
+    closeBtn.adjustsImageWhenHighlighted = NO;
+    priceTf.rightView = closeBtn;
+    view.closeBtn = closeBtn;
+    priceTf.rightViewMode = UITextFieldViewModeAlways;
+    
+    UILabel *warnLab = [[UILabel alloc] initWithFrame:LPRectMake(100, 100, 200, 30)];
+    warnLab.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    warnLab.text = @"请输入有效数字";
+    warnLab.textAlignment = NSTextAlignmentCenter;
+    warnLab.textColor = [UIColor whiteColor];
+    warnLab.font = kFont(18);
+    warnLab.alpha = 0;
+    view.warnLab = warnLab;
+    [view addSubview:warnLab];
+    
+    UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, 205, 160, 45) title:@"取消"];
+    [leftBtn addTarget:view action:@selector(clickLeftBtn:) forControlEvents:UIControlEventTouchUpInside];
+    view.leftBtn = leftBtn;
+    [view addSubview:leftBtn];
+    
+    UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, 205, 160, 45) title:@"确定"];
+    [view addSubview:rightBtn];
+    [rightBtn addTarget:view action:@selector(clickRightBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return view;
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    //判断是否允许输入负数
+    if (_onlyNSInteger != YES && textField.text.length == 0 && [string isEqualToString:@"-"])
+    {
+        return YES;
+    }
+    
+    //不允许输入空格
+    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
+    if (![string isEqualToString:tem])
+    {
+        return NO;
+    }
+    
+    NSString *newStr =[textField.text stringByAppendingString:string];
+
+    if ([textField.text isEqualToString:@"0"] || [textField.text isEqualToString:@"-0"])
+    {
+        if ([self isPureDouble:string])
+        {
+            return NO;
+        }
+    }
+    
+    return [self isPureDouble:newStr];
+}
+
+
+#pragma mark -click
+-(void)clickLeftBtn:(UIButton *)sender
+{
+    if ([sender.currentTitle isEqualToString:@"取消"])
+    {
+        [self removeFromSuperview];
+    }
+    else
+    {
+        _priceTf.text = _price;
+        [sender setTitle:@"取消" forState:UIControlStateNormal];
+    }
+}
+
+-(void)clickRightBtn:(UIButton *)sender
+{
+    if ([self isPureDouble:_priceTf.text])
+    {
+        !_submitBlock ?: _submitBlock([_priceTf.text doubleValue]);
+        [self removeFromSuperview];
+    }
+    else
+    {
+        _warnLab.alpha = 1;
+        [UIView animateWithDuration:1.5 animations:^{
+            
+            _warnLab.alpha = 0;
+        }];
+    }
+}
+
+-(void)clickCloseBtn:(UIButton *)sender
+{
+    _priceTf.text = @"";
+    sender.hidden = YES;
+}
+
+#pragma mark - UITextField
+-(void)changeTextField:(UITextField *)sender
+{
+    if (_priceTf.hasText)
+    {
+        self.closeBtn.hidden = NO;
+    }
+    else
+    {
+        self.closeBtn.hidden = YES;
+    }
+    
+    if([_priceTf.text doubleValue] != [_price doubleValue] && _isRestorePrice == YES)
+    {
+        [_leftBtn setTitle:@"还原金额" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [_leftBtn setTitle:@"取消" forState:UIControlStateNormal];
+    }
+}
+
+#pragma mark - other
+//判断字符串能否转成Double类型
+- (BOOL)isPureDouble:(NSString*)string{
+    NSScanner* scan = [NSScanner scannerWithString:string];
+    double val;
+    return[scan scanDouble:&val] && [scan isAtEnd];
+}
+
+@end

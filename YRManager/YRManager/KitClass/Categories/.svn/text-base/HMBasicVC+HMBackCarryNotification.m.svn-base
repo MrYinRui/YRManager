@@ -1,0 +1,120 @@
+//
+//  HMBasicVC+HMBackCarryNotification.m
+//  HotelManager-Pad
+//
+//  Created by Seven on 2017/1/7.
+//  Copyright © 2017年 塞米酒店. All rights reserved.
+//
+
+#import "HMBasicVC+HMBackCarryNotification.h"
+#import "TodayRoomStatusVC.h"
+#import "HMTodayOrderVC.h"
+
+@implementation HMBasicVC (HMBackCarryNotification)
+
+- (void)backToLastVCWithNotification:(NSString *)notificationName
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:nil];
+    
+    [self backToLastVC];
+}
+
+#warning ToDo 新文
+- (void)backToTodayRoomStatusVCOrTodayOrderVC
+{
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    NSUInteger count = viewControllers.count;
+    UIViewController *viewController = nil;
+    
+    //判断来源控制
+    NSUInteger roomStatusIndex = 0;
+    NSUInteger todayOrderIndex = 0;
+    
+    UIViewController *vc = nil;
+    for (int i = 0; i < count; i++)
+    {
+        UIViewController *vc = viewControllers[i];
+        if ([vc isKindOfClass:[TodayRoomStatusVC class]])
+        {
+            roomStatusIndex = i;
+        }
+        else if ([vc isKindOfClass:[HMTodayOrderVC class]])
+        {
+            todayOrderIndex = i;
+        }
+    }
+    
+    if (todayOrderIndex > roomStatusIndex)
+    {
+        vc  = viewControllers[todayOrderIndex];
+    }
+    else
+    {
+        vc = viewControllers[roomStatusIndex];
+    }
+    
+    if ([vc isKindOfClass:[TodayRoomStatusVC class]])
+    {
+        viewController = vc;
+        [[NSNotificationCenter defaultCenter] postNotificationName:CancelOrderSuccessNoti object:nil userInfo:nil];
+    }
+    else if ([vc isKindOfClass:[HMTodayOrderVC class]])
+    {
+        viewController = vc;
+        [[NSNotificationCenter defaultCenter] postNotificationName:HMUpdateOrderNoti object:nil userInfo:nil];
+    }
+    
+    if (viewController)
+    {
+        [self.navigationController popToViewController:viewController animated:YES];
+        
+    }
+    
+}
+
+- (void)backToVC:(Class)vcClass
+withNotification:(NSString *)notificationName
+{
+  [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:nil];
+    
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    NSUInteger count = viewControllers.count;
+    UIViewController *viewController = nil;
+    
+    
+    for (int i = 0; i < count; i++)
+    {
+        UIViewController *tempVC = viewControllers[i];
+        if ([tempVC isKindOfClass:vcClass])
+        {
+            viewController = tempVC;
+            break;
+        }
+    }
+    
+    if (viewController)
+    {
+        [self.navigationController popToViewController:viewController animated:YES];
+        
+    }
+
+}
+
+- (BOOL)isLastViewControllerKindOf:(Class)aClass
+{
+    NSArray *viewControlllers = self.navigationController.viewControllers;
+    NSUInteger controllersCount = viewControlllers.count;
+    UIViewController *lastVC = viewControlllers[controllersCount - 2];
+    
+    if ([lastVC isKindOfClass:aClass])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+
+@end

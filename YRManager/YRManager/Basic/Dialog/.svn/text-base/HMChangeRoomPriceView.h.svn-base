@@ -1,0 +1,20 @@
+//
+//  HMChangeRoomPriceView.h
+//  HotelManager-Pad
+//
+//  Created by kqz on 17/1/17.
+//  Copyright © 2017年 塞米酒店. All rights reserved.
+//
+
+#import "LPBasicDialogView.h"
+
+@interface HMChangeRoomPriceView : LPBasicDialogView
+
+@property (nonatomic, strong) void (^submitBlock)(double price);
+
+@property (nonatomic, assign) BOOL isRestorePrice;//!<是否开启恢复价格功能(默认NO)
+@property (nonatomic, assign) BOOL onlyNSInteger; //!<只能输入整数(默认NO)
+
++(instancetype)viewWithTitle:(NSString *)title AndPrice:(NSString *)price;
+
+@end

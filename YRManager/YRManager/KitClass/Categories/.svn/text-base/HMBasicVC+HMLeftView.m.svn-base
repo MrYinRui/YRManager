@@ -1,0 +1,170 @@
+//
+//  HMBasicVC+HMLeftView.m
+//  HotelManager-Pad
+//
+//  Created by r on 16/12/15.
+//  Copyright © 2016年 塞米酒店. All rights reserved.
+//
+
+#import "HMBasicVC+HMLeftView.h"
+#import "HMOrder.h"
+#import "HMRoomStatus.h"
+#import "HMDoorLockRoomModel.h"
+
+@implementation HMBasicVC (HMLeftView)
+
+- (void)initLeftViewWithModel:(id)model{
+    
+    UIView *leftView = [[UIView alloc] init];
+    leftView.frame = LPRectMake(0, 65, 375, kBaseScreenHeight - 65);
+    leftView.backgroundColor = kColor(247, 248, 249, 1.0);
+    [self.view addSubview:leftView];
+    
+    UILabel *checkInDateLab = [[UILabel alloc] init];
+    checkInDateLab.frame = LPRectMake(36, 40, 210, 20);
+    checkInDateLab.textColor = kColor(134, 135, 136, 1.0);
+    checkInDateLab.font = kFont(18);
+    [leftView addSubview:checkInDateLab];
+    
+    UILabel *bluetoothLab = [[UILabel alloc] init];
+    bluetoothLab.frame = LPRectMake(252, 42.5, 50, 15);
+    bluetoothLab.textColor = [UIColor whiteColor];
+    bluetoothLab.font = kFont(10);
+    bluetoothLab.backgroundColor = kColor(125, 210, 190, 1.0);
+    bluetoothLab.layer.cornerRadius = 3.0 *kScreenScale;
+    bluetoothLab.clipsToBounds = YES;
+    bluetoothLab.text = @"蓝牙门锁";
+    bluetoothLab.textAlignment = NSTextAlignmentCenter;
+    [leftView addSubview:bluetoothLab];
+    
+    UILabel *roomTypeLab = [[UILabel alloc] init];
+    roomTypeLab.frame = LPRectMake(36, 73, 270, 20);
+    roomTypeLab.textColor = kColor(134, 135, 136, 1.0);
+    roomTypeLab.font = kFont(18);
+    [leftView addSubview:roomTypeLab];
+    
+    UILabel *roomAddressLab = [[UILabel alloc] init];
+    roomAddressLab.frame = LPRectMake(36, 100, 339, 45);
+    roomAddressLab.textColor = kColor(134, 135, 136, 1.0);
+    roomAddressLab.font = kFont(30);
+    [leftView addSubview:roomAddressLab];
+
+    UILabel *roomFeatureLab = [[UILabel alloc] init];
+    roomFeatureLab.frame = LPRectMake(36, 162, 339, 20);
+    roomFeatureLab.textColor = kColor(134, 135, 136, 1.0);
+    roomFeatureLab.font = kFont(18);
+    [leftView addSubview:roomFeatureLab];
+    
+    if([model isKindOfClass:[HMOrder class]])
+    {
+        HMOrder *order = (HMOrder *)model;
+        HMRoom *room = order.room;
+        
+        checkInDateLab.text = [NSString stringWithFormat:@"%@-%@ %@晚", [self formatDateString:order.checkInDate], [self formatDateString:order.checkOutDate], order.liveDays];
+        if ([room.bleAvaliable isEqualToString:@"1"]) {
+            bluetoothLab.hidden = NO;
+        } else {
+            bluetoothLab.hidden = YES;
+        }
+        roomTypeLab.text = room.houseType;
+        roomAddressLab.text = [NSString stringWithFormat:@"%02d%02d 房  %@%@楼", room.floor.intValue, room.roomNumber.intValue, room.huayuan.name, room.floor];
+        [roomAddressLab setAttributedStringWithSubString:[NSString stringWithFormat:@"%02d%02d", room.floor.intValue, room.roomNumber.intValue] font:kFont(50)];
+        
+        NSString *breakfast = nil;
+        if([room.breakfast isEqualToString:@"1"])
+        {
+            breakfast = @"含早";
+        }
+        else
+        {
+            breakfast = @"无早";
+        }
+        
+        NSString *detail = [NSString stringWithFormat:@"%@/%@/%@/%@人/%@㎡",breakfast,breakfast, room.doorModel, room.bedModel, room.limitPeople, room.roomArea];
+        roomFeatureLab.text = detail;
+
+        
+    }
+    else if([model isKindOfClass:[HMDoorLockRoomModel class]])
+    {
+        HMDoorLockRoomModel *room = (HMDoorLockRoomModel *)model;
+        
+        checkInDateLab.text = [NSString stringWithFormat:@"%@-%@ %@晚", [self formatDateString:room.checkInDate], [self formatDateString:room.checkOutDate], room.liveDays];
+        if ([room.bleAvaliable isEqualToString:@"1"]) {
+            bluetoothLab.hidden = NO;
+        } else {
+            bluetoothLab.hidden = YES;
+        }
+        roomTypeLab.text = room.houseType;
+        roomAddressLab.text = [NSString stringWithFormat:@"%02d%02d 房  %@%@楼", room.floor.intValue, room.roomNumber.intValue, room.gardenName, room.floor];
+        [roomAddressLab setAttributedStringWithSubString:[NSString stringWithFormat:@"%02d%02d", room.floor.intValue, room.roomNumber.intValue] font:kFont(50)];
+        
+        NSString *breakfast = nil;
+        if([room.breakfast isEqualToString:@"1"])
+        {
+            breakfast = @"含早";
+        }
+        else
+        {
+            breakfast = @"无早";
+        }
+        
+        NSString *detail = [NSString stringWithFormat:@"%@/%@/%@/%@人/%@㎡",breakfast,breakfast, room.doorModel, room.bedModel, room.limitPeople, room.roomArea];
+        roomFeatureLab.text = detail;
+        
+        
+    }
+    
+    else if ([model isKindOfClass:[HMRoomStatus class]])
+    {
+        HMRoomStatus *roomStatus = (HMRoomStatus*)model;
+        checkInDateLab.text = nil;
+        roomTypeLab.text = roomStatus.fxmc;
+        
+        CGSize roomTypeSize = kLabelSize(roomTypeLab.text, kFont(18));
+        
+        //重新布局
+        roomTypeLab.frame = LPRectMake(36, 40, roomTypeSize.width, 21);
+        bluetoothLab.frame = LPRectMake(46 + roomTypeSize.width, 42.5, 50, 15);
+        roomAddressLab.frame = LPRectMake(36, 70, 305, 45);
+        roomFeatureLab.frame = LPRectMake(36, 132, 325, 20);
+        
+        roomTypeLab.text = roomStatus.fxmc;
+        roomAddressLab.text = [NSString stringWithFormat:@"%@房 %@%@楼",roomStatus.mph,roomStatus.buildingName,roomStatus.louceng];
+        [roomAddressLab setAttributedStringWithSubString:roomStatus.mph font:kFont(50)];
+        
+        NSString *breakfast = nil;
+        if([roomStatus.zaocan isEqualToString:@"1"])
+        {
+            breakfast = @"含早";
+        }
+        else
+        {
+            breakfast = @"无早";
+        }
+        
+        NSString *detail = [NSString stringWithFormat:@"%@/%@/%@/%@人/%@㎡",breakfast,roomStatus.huxing,roomStatus.chuangxing,roomStatus.rsxz,roomStatus.fwmj];
+        roomFeatureLab.text = detail;
+    }
+    else
+    {
+        checkInDateLab.text = @"05月25日-05月26日 1晚";
+        roomTypeLab.text = @"海景大床房";
+        roomAddressLab.text = @"1248房  A栋12楼";
+        [roomAddressLab setAttributedStringWithSubString:@"1248" font:kFont(50)];
+        roomFeatureLab.text = @"无早/一房/双床/2人/25m²";
+    }
+}
+
+- (NSString *)formatDateString:(NSString *)dateStr
+{
+    NSString *subStr = [dateStr substringFromIndex:5];
+    
+    NSString *str1 = [subStr stringByReplacingOccurrencesOfString:@"-" withString:@"月"];
+    
+    NSString *str2 = [str1 stringByAppendingString:@"日"];
+    
+    return str2;
+}
+
+@end

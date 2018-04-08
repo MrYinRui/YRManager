@@ -1,0 +1,74 @@
+//
+//  NSString+URL.m
+//  GoGoFun
+//
+//  Created by 塞米酒店 on 16/2/18.
+//  Copyright © 2016年 GoGoFun. All rights reserved.
+//
+
+#import "NSString+URL.h"
+
+@implementation NSString (URL)
+
+- (NSString *)URLEncodedString
+{
+    NSString *encodedString = (NSString *)
+    CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                            (CFStringRef)self,
+                                            (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                            NULL,
+                                            kCFStringEncodingUTF8));
+    
+    //encodedString = [self encodeToPercentEscapeString:encodedString];
+    
+    return encodedString;
+}
+
+//二次转码
+- (NSString *)encodeToPercentEscapeString: (NSString *) input
+{
+    NSString *outputStr = (NSString *)
+    CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                              (CFStringRef)input,
+                                                              NULL,
+                                                              (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                              kCFStringEncodingUTF8));
+    return outputStr;
+}
+
++(NSURL *)picURLWithString:(NSString *)urlString type:(ImgSize)imgSize{
+    
+    NSRange range = [urlString rangeOfString:@"/WEB-INF/attachment/"];
+    if (range.length == 0) {
+        return nil;
+    }
+    NSString *cutStr = [urlString substringFromIndex:range.location+range.length-1];
+    
+    NSRange jpgRange = [cutStr rangeOfString:@".jpg" options:NSBackwardsSearch];
+    NSRange pngRange = [cutStr rangeOfString:@".png" options:NSBackwardsSearch];
+    if (jpgRange.length != 0)
+    {
+        cutStr = [cutStr substringToIndex:jpgRange.location];
+    }
+    else if (pngRange.length != 0)
+    {
+        cutStr = [cutStr substringToIndex:pngRange.location];
+    }
+    else
+    {
+        return nil;
+    }
+    
+    NSArray *sizeArr = @[@"-120X120.jpg",@"-176X176.jpg",@"-360X270.jpg",@".jpg"];
+    NSString *newStr = [NSString stringWithFormat:@"%@%@",cutStr,sizeArr[imgSize]];
+    
+    NSData *data = [newStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64Encoded = [data base64EncodedStringWithOptions:0];
+    
+    NSString *url = [NSString stringWithFormat:@"http://%@:%@/%@%@", [NSUserDefaults hotelHost], [NSUserDefaults hotelPort], @"engine/showfile.jsp?t=0&f=",base64Encoded];
+    
+    return [NSURL URLWithString:url];
+}
+
+
+@end

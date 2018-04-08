@@ -1,0 +1,41 @@
+//
+//  HMImageFile.h
+//  HotelManager-Pad
+//
+//  Created by Seven on 2016/12/14.
+//  Copyright © 2016年 塞米酒店. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, ImageSubPath) {
+    ImageSubPathHeadImage,          //!<头像
+    ImageSubPathIdcardImage,        //!<身份证头像
+    ImageSubPathPersonalphoto,      //!<个人自拍照
+    ImageSubPathIdentificationphoto, //!<证件全图
+    ImageSubPathAttachment           //!<附件
+};
+
+typedef NS_ENUM(NSInteger, IsToTotalSystem) {
+    IsToTotalSystemDefault,     //!<默认
+    IsToTotalSystemSend,        //!<上传主系统
+    IsToTotalSystemNotSend      //!<不上传主系统
+};
+//t2410
+#define kImageSubPathHeadImageKey @"headImages"
+#define kImageSubPathIdcardImageKey @"idcard-images"
+#define kImageSubPathPersonalphotoKey @"personal-photos"
+#define kImageSubPathIdentificationphotoKey @"identification-photo"
+#define kImageSubPathAttachmentKey @"t2410" //!<附件
+
+
+@interface HMImageFile : NSObject
+
+@property (nonatomic, assign) ImageSubPath subPath;//!<文件子路径(必填)
+@property (nonatomic, strong) NSData *imageData;//!<图片(必填)
+@property (nonatomic, copy) NSString *fileName;//!<文件名
+@property (nonatomic, assign) IsToTotalSystem isToSystem;//!<是否上传主系统
+
++ (NSArray *)imagePathFromServerWithResult:(NSDictionary *)result;
+
+@end

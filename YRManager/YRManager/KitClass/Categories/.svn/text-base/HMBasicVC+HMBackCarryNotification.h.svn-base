@@ -1,0 +1,34 @@
+//
+//  HMBasicVC+HMBackCarryNotification.h
+//  HotelManager-Pad
+//
+//  Created by Seven on 2017/1/7.
+//  Copyright © 2017年 塞米酒店. All rights reserved.
+//
+
+#import "HMBasicVC.h"
+
+
+@interface HMBasicVC (HMBackCarryNotification)
+
+- (void)backToLastVCWithNotification:(NSString *)notificationName;
+
+#warning 判断来源是 今日订单 还是 当日房态 回到来源控制器
+/**回到房态 并刷新*/
+- (void)backToTodayRoomStatusVCOrTodayOrderVC;
+
+
+/**回到导航控制器栈中指定的控制器并发出通知*/
+- (void)backToVC:(Class)vcClass
+withNotification:(NSString *)notificationName;
+
+
+
+/**
+ 上一个控制是哪个类型的控制器
+ @param aClass 控制器类
+ @return yes or no
+ */
+- (BOOL)isLastViewControllerKindOf:(Class)aClass;
+
+@end

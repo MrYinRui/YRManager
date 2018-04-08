@@ -1,0 +1,359 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/IOS_APP/!svn/ver/3237/HotelManager-Pad/HotelManager-Pad/KitClass/Categories
+END
+UIViewController+ChildVC.m
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIViewController+ChildVC.m
+END
+NSUserDefaults+LPUserInfo.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/IOS_APP/!svn/ver/2231/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSUserDefaults+LPUserInfo.h
+END
+UIImage+Extention.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/IOS_APP/!svn/ver/3120/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+Extention.h
+END
+UILabel+RMB.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_APP/!svn/ver/2990/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UILabel+RMB.h
+END
+UIView+LPFrame.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+LPFrame.h
+END
+UIButton+countDown.m
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/IOS_APP/!svn/ver/2714/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIButton+countDown.m
+END
+PHAssetCollection+HMPhotoPicker.h
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/IOS_APP/!svn/ver/2460/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/PHAssetCollection+HMPhotoPicker.h
+END
+HMBasicVC+HMBackCarryNotification.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/3177/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMBasicVC+HMBackCarryNotification.m
+END
+HMObjectToJson.m
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMObjectToJson.m
+END
+NSUserDefaults+LPUserInfo.m
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/IOS_APP/!svn/ver/2594/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSUserDefaults+LPUserInfo.m
+END
+UIImage+Extention.m
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/IOS_APP/!svn/ver/3120/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+Extention.m
+END
+UILabel+RMB.m
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_APP/!svn/ver/3237/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UILabel+RMB.m
+END
+UIView+LPFrame.m
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+LPFrame.m
+END
+PHAssetCollection+HMPhotoPicker.m
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/IOS_APP/!svn/ver/2460/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/PHAssetCollection+HMPhotoPicker.m
+END
+NSObject+JsonString.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSObject+JsonString.h
+END
+HMBasicVC+HMLeftView.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/IOS_APP/!svn/ver/2536/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMBasicVC+HMLeftView.h
+END
+NSString+URL.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_APP/!svn/ver/2527/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+URL.h
+END
+NSObject+JsonString.m
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/IOS_APP/!svn/ver/2229/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSObject+JsonString.m
+END
+NSString+LPFilterInvalidCharacter.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/2973/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+LPFilterInvalidCharacter.h
+END
+HMBasicVC+HMLeftView.m
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/IOS_APP/!svn/ver/3091/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMBasicVC+HMLeftView.m
+END
+NSString+URL.m
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_APP/!svn/ver/3120/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+URL.m
+END
+NSString+LPFilterInvalidCharacter.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/2973/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+LPFilterInvalidCharacter.m
+END
+UIImage+fixOrientation.h
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/2540/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+fixOrientation.h
+END
+UIView+HMCore.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_APP/!svn/ver/2266/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+HMCore.h
+END
+UIImage+fixOrientation.m
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/2540/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+fixOrientation.m
+END
+MBProgressHUD+GoGoFun.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/MBProgressHUD+GoGoFun.h
+END
+JsonToObjectProtocol.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/IOS_APP/!svn/ver/2353/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/JsonToObjectProtocol.h
+END
+UIView+HMCore.m
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_APP/!svn/ver/2266/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+HMCore.m
+END
+UIView+ParentVC.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_APP/!svn/ver/2922/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+ParentVC.h
+END
+NSString+MD_5.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+MD_5.h
+END
+NSArray+Extension.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSArray+Extension.h
+END
+MBProgressHUD+GoGoFun.m
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/MBProgressHUD+GoGoFun.m
+END
+UITextView+Placeholder.h
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/2477/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UITextView+Placeholder.h
+END
+UIView+ParentVC.m
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_APP/!svn/ver/2922/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIView+ParentVC.m
+END
+UIImage+LPQRCodeGenerator.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/IOS_APP/!svn/ver/2227/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+LPQRCodeGenerator.h
+END
+NSString+MD_5.m
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSString+MD_5.m
+END
+NSArray+Extension.m
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSArray+Extension.m
+END
+UIDevice+LPGetIP.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/IOS_APP/!svn/ver/2227/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIDevice+LPGetIP.h
+END
+UITextView+Placeholder.m
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/2477/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UITextView+Placeholder.m
+END
+UIImage+LPQRCodeGenerator.m
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/IOS_APP/!svn/ver/2227/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIImage+LPQRCodeGenerator.m
+END
+CALayer+LPFrame.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/CALayer+LPFrame.h
+END
+UIDevice+LPGetIP.m
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/IOS_APP/!svn/ver/2227/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIDevice+LPGetIP.m
+END
+UITextField+ValiMobile.h
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UITextField+ValiMobile.h
+END
+NSObject+JSONToObject.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/IOS_APP/!svn/ver/2353/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSObject+JSONToObject.h
+END
+CALayer+LPFrame.m
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/CALayer+LPFrame.m
+END
+UITextField+ValiMobile.m
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UITextField+ValiMobile.m
+END
+NSObject+JSONToObject.m
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/IOS_APP/!svn/ver/3170/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSObject+JSONToObject.m
+END
+NSDate+HMProjectKit.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/IOS_APP/!svn/ver/2950/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSDate+HMProjectKit.h
+END
+UIApplication+LPOpenURL.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIApplication+LPOpenURL.h
+END
+UIButton+LPCustomBtn.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/IOS_APP/!svn/ver/2694/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIButton+LPCustomBtn.h
+END
+UIApplication+LPOpenURL.m
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIApplication+LPOpenURL.m
+END
+UILabel+NSMutableAttributedString.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/2995/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UILabel+NSMutableAttributedString.h
+END
+NSDate+HMProjectKit.m
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/IOS_APP/!svn/ver/2950/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/NSDate+HMProjectKit.m
+END
+UIViewController+ChildVC.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIViewController+ChildVC.h
+END
+UIButton+LPCustomBtn.m
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/IOS_APP/!svn/ver/3123/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIButton+LPCustomBtn.m
+END
+UIButton+countDown.h
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/IOS_APP/!svn/ver/1824/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UIButton+countDown.h
+END
+UILabel+NSMutableAttributedString.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/2995/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/UILabel+NSMutableAttributedString.m
+END
+HMBasicVC+HMBackCarryNotification.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/IOS_APP/!svn/ver/3177/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMBasicVC+HMBackCarryNotification.h
+END
+HMObjectToJson.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_APP/!svn/ver/3127/HotelManager-Pad/HotelManager-Pad/KitClass/Categories/HMObjectToJson.h
+END

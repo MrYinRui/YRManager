@@ -1,0 +1,45 @@
+//
+//  UIVC+ChildVC.h
+//  XiaoYa
+//
+//  Created by Xun on 15/12/22.
+//  Copyright © 2015年 xiaoyacommunity. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+typedef void (^AnimationBlock)(void);
+
+@interface UIViewController (ChildVC)
+
+/**
+ *  添加子视图控制器
+ *  为避免与系统自带的(addChildVC:)方法，故改为addChildVC:
+ *
+ *  @param  childController 要添加的视图控制器
+ */
+- (void)addChildVC:(UIViewController *)childController;
+
+/**
+ *  添加子视图控制器并设置viewController显示位置
+ * 
+ *  @param  childController 要添加的视图控制器
+ *  @param  frame   childController位置
+ */
+- (void)addChildVC:(UIViewController *)childController withFrame:(CGRect)frame;
+/**
+ *  移除视图控制器
+ *
+ *  @param childController 需要移除的视图控制器
+ */
+- (void)removeChildVC:(UIViewController *)childController;
+
+/**
+ *  移除视图控制器
+ *
+ *  @param childController 需要移除的视图控制器
+ *  @param animationBlock  动画（UIView animation）
+ */
+- (void)removeChildVC:(UIViewController *)childController withAnimation:(AnimationBlock)animationBlock;
+
+@end

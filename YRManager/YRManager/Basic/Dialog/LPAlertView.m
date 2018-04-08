@@ -1,0 +1,451 @@
+//
+//  LPAlertView.m
+//  Lodger-Pad
+//
+//  Created by xun on 10/8/16.
+//  Copyright © 2016 xun. All rights reserved.
+//
+
+#import "LPAlertView.h"
+
+@implementation LPAlertView
+
++ (instancetype)alertViewWithMsg:(NSString *)msg
+{
+    return [self alertViewWithMsg:msg greenBorderBtn:nil greenBtn:^(UIButton *btn) {
+        
+        [btn setTitle:@"我知道了" forState:UIControlStateNormal];
+        
+        btn.x = 50 * ScreenScale;
+        btn.width = btn.superview.width - 100 * ScreenScale;
+    }];
+}
+
++ (instancetype)alertViewWithMsg:(NSString *)msg
+                  greenBorderBtn:(void (^)(UIButton *))greenBorderBtn
+                        greenBtn:(void (^)(UIButton *))greenBtn
+{
+    LPAlertView *alert = [self alertViewWithMsg:msg iconType:IconWarn greenBorderBtn:greenBorderBtn greenBtn:greenBtn];
+    
+    return alert;
+}
+
++ (instancetype)alertViewWithMsg:(NSString *)msg iconType:(IconType)iconType greenBorderBtn:(void (^)(UIButton *))greenBorderBtn greenBtn:(void (^)(UIButton *))greenBtn{
+    
+    LPAlertView *alert = [self viewWithFrame:LPRectMake(312, 149, 400, 200) title:nil];
+    
+    UIImageView *alertIcon = [UIImageView new];
+    if (iconType == IconWarn) {
+        alertIcon.image = [UIImage imageNamed:@"warn_01"];
+    } else if (iconType == IconTick) {
+        alertIcon.image = [UIImage imageNamed:@"check_01"];
+    } else if (iconType == IconPhone) {
+        alertIcon.image = [UIImage imageNamed:@"icon_phone"];
+    }
+    
+    alertIcon.frame = LPRectMake(174, 37, 52, 52);
+    [alert addSubview:alertIcon];
+    
+    UILabel *lab = [UILabel new];
+    lab.text = msg;
+    lab.font = kFont(24);
+    lab.frame = LPRectMake(50, 115, 300, 0);
+    lab.numberOfLines = 0;
+    lab.textAlignment = NSTextAlignmentCenter;
+    [lab setLineSpace:10];
+    [alert addSubview:lab];
+    
+    lab.height = [lab sizeThatFits:CGSizeMake(300, CGFLOAT_MAX)].height;
+    alert.height += lab.height + 40;
+    if (greenBorderBtn)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, 165 + lab.height / kScreenScale, 160, 45) title:nil];
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        [alert addSubview:leftBtn];
+        greenBorderBtn(leftBtn);
+    }
+    if (greenBtn)
+    {
+        UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, 165 + lab.height / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        greenBtn(rightBtn);
+    }
+
+    return alert;
+}
+
++ (instancetype)alertViewWithMsg:(NSString *)msg detailMsg:(NSString *)detailMsg greenBorderBtn:(void (^)(UIButton *))greenBorderBtn greenBtn:(void (^)(UIButton *))greenBtn
+{
+    LPAlertView *alert = [self viewWithFrame:LPRectMake(312, 149, 400, 200) title:nil];
+    
+    UIImageView *alertIcon = [UIImageView new];
+    alertIcon.image = [UIImage imageNamed:@"warn_01"];
+    alertIcon.frame = LPRectMake(174, 37, 52, 52);
+    [alert addSubview:alertIcon];
+    
+    UILabel *lab = [UILabel new];
+    lab.text = msg;
+    lab.font = kFont(24);
+    lab.frame = LPRectMake(50, 110, 300, 0);
+    lab.numberOfLines = 0;
+    lab.textAlignment = NSTextAlignmentCenter;
+    [lab setLineSpace:10];
+    [alert addSubview:lab];
+    CGFloat labHeight = [lab sizeThatFits:LPSizeMake(300, CGFLOAT_MAX)].height;
+    lab.height = labHeight;
+    
+    CGFloat detailLabHeight = 0.0;
+    if (detailMsg && ![detailMsg isEqualToString:@""]) {
+        UILabel *detailLab = [UILabel new];
+        detailLab.text = detailMsg;
+        detailLab.textColor = [UIColor lightGrayColor];
+        detailLab.font = kFont(17);
+        detailLab.frame = LPRectMake(50, 115 + labHeight / kScreenScale, 300, 0);
+        detailLab.numberOfLines = 0;
+        detailLab.textAlignment = NSTextAlignmentCenter;
+        [detailLab setLineSpace:6];
+        [alert addSubview:detailLab];
+        detailLabHeight = [detailLab sizeThatFits:LPSizeMake(300, CGFLOAT_MAX)].height;
+        detailLab.height = detailLabHeight;
+    }
+    
+    CGFloat totalLabHeight;
+    if (labHeight && detailLabHeight) {
+        totalLabHeight = labHeight + detailLabHeight + 12 * kScreenScale;
+    } else{
+        totalLabHeight = labHeight + detailLabHeight;
+    }
+    
+    alert.height += totalLabHeight + 25 * kScreenScale;
+    if (greenBorderBtn)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, 125 + totalLabHeight / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:leftBtn];
+        greenBorderBtn(leftBtn);
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    if (greenBtn)
+    {
+        UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, 125 + totalLabHeight / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        greenBtn(rightBtn);
+        
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (!greenBtn && !greenBorderBtn)
+    {
+        alert.height -= kScreenScale * 45.f;
+    }
+    
+    return alert;
+}
+
+//+ (instancetype)alertViewWithMsg:(NSString *)msg
+//                       detailMsg:(NSString *)detailMsg
+//                         actions:(NSArray<HMAction *> *)actions
+//{
+//    if (actions.count == 1)
+//    {
+//        
+//    }
+//    else if (actions.count == 2)
+//    {
+//    
+//    }
+//    else if (actions.count == 3)
+//    {
+//    
+//    }
+//}
+
++ (instancetype)alertViewWithMsg:(NSString *)msg detailMsg:(NSString *)detailMsg leftBtnBlock:(void (^)(UIButton *))leftBtnBlock middleBtnBlock:(void (^)(UIButton *))middleBtnBlock rightBtnBlock:(void (^)(UIButton *))rightBtnBlock{
+    
+    LPAlertView *alert = [LPAlertView viewWithFrame:LPRectMake(237, 149, 550, 170) title:nil];
+    
+    UIImageView *alertIcon = [UIImageView new];
+    alertIcon.image = [UIImage imageNamed:@"warn_01"];
+    alertIcon.frame = LPRectMake(249, 37, 52, 52);
+    [alert addSubview:alertIcon];
+    
+    UILabel *lab = [UILabel new];
+    lab.text = msg;
+    lab.font = kFont(24);
+    lab.frame = LPRectMake(100, 110, 350, 0);
+    lab.numberOfLines = 0;
+    lab.textAlignment = NSTextAlignmentCenter;
+    [lab setLineSpace:10];
+    [alert addSubview:lab];
+    CGFloat labHeight = [lab sizeThatFits:LPSizeMake(350, CGFLOAT_MAX)].height;
+    lab.height = labHeight;
+    
+    CGFloat detailLabHeight = 0.0;
+    if (detailMsg && ![detailMsg isEqualToString:@""]) {
+        UILabel *detailLab = [UILabel new];
+        detailLab.text = detailMsg;
+        detailLab.textColor = [UIColor lightGrayColor];
+        detailLab.font = kFont(17);
+        detailLab.frame = LPRectMake(100, 115 + labHeight / kScreenScale, 350, 0);
+        detailLab.numberOfLines = 0;
+        detailLab.textAlignment = NSTextAlignmentCenter;
+        [detailLab setLineSpace:6];
+        [alert addSubview:detailLab];
+        detailLabHeight = [detailLab sizeThatFits:LPSizeMake(350, CGFLOAT_MAX)].height;
+        detailLab.height = detailLabHeight;
+    }
+    
+    CGFloat totalLabHeight;
+    if (labHeight && detailLabHeight) {
+        totalLabHeight = labHeight + detailLabHeight + 12 * kScreenScale;
+    } else{
+        totalLabHeight = labHeight + detailLabHeight;
+    }
+    
+    alert.height += totalLabHeight + 25 * kScreenScale;
+    if (leftBtnBlock)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(18, 125 + totalLabHeight / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:leftBtn];
+        leftBtnBlock(leftBtn);
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    if (middleBtnBlock)
+    {
+        UIButton *middleBtn = [UIButton greenBtnWithFrame:LPRectMake(195, 125 + totalLabHeight / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:middleBtn];
+        middleBtnBlock(middleBtn);
+        
+        [middleBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    if (rightBtnBlock)
+    {
+        UIButton *rightBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(370, 125 + totalLabHeight / kScreenScale, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        rightBtnBlock(rightBtn);
+        
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (!leftBtnBlock && !middleBtnBlock && !rightBtnBlock)
+    {
+        alert.height -= kScreenScale * 45.f;
+    }
+    
+    return alert;
+}
+
++ (instancetype)alertViewWithMsg:(NSString *)msg
+                    upBtnBlock:(void(^)(UIButton *btn))upBtnBlock
+                  middleBtnBlock:(void(^)(UIButton *btn))middleBtnBlock
+                   downBtnBlock:(void(^)(UIButton *btn))downBtnBlock
+{
+     LPAlertView *alert = [self viewWithFrame:LPRectMake(312, 149, 400, 300) title:msg];
+    
+    if (upBtnBlock)
+    {
+        UIButton *upBtn = [UIButton greenBtnWithFrame:LPRectMake(30, 65, 340, 45) title:nil];
+        [alert addSubview:upBtn];
+        upBtnBlock(upBtn);
+        [upBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (middleBtnBlock)
+    {
+        UIButton *middleBtn = [UIButton greenBtnWithFrame:LPRectMake(30, 140, 340, 45) title:nil];
+        [alert addSubview:middleBtn];
+        middleBtnBlock(middleBtn);
+        [middleBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (downBtnBlock)
+    {
+        UIButton *downBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(30, 215, 340, 45) title:nil];
+        [alert addSubview:downBtn];
+        downBtn.showsTouchWhenHighlighted = NO;
+        downBtnBlock(downBtn);
+        [downBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    return alert;
+}
+
++ (instancetype)alertViewWithCustomView:(UIView *)customView
+                         greenBorderBtn:(void(^)(UIButton *btn))greenBorderBtn
+                               greenBtn:(void(^)(UIButton *btn))greenBtn
+{
+    LPAlertView *alert = [LPAlertView viewWithFrame:kInputFrame title:nil];
+    
+    for (CALayer *sublayer in alert.layer.sublayers)
+    {
+        if (sublayer.height <= 2)
+        {
+            [sublayer removeFromSuperlayer];
+            break;
+        }
+    }
+    
+    [alert addSubview:customView];
+    
+    [customView mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.left.mas_equalTo(28 * kScreenScale);
+        make.right.mas_equalTo(-28 * kScreenScale);
+        make.top.mas_equalTo(35 * kScreenScale);
+        make.height.mas_equalTo(customView.height);
+    }];
+    
+    if (greenBorderBtn)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, CGRectGetMaxY(customView.frame) / kScreenScale + 60, 160, 45) title:nil];
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        [alert addSubview:leftBtn];
+        greenBorderBtn(leftBtn);
+    }
+    if (greenBtn)
+    {
+        UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, CGRectGetMaxY(customView.frame) / kScreenScale + 60, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        greenBtn(rightBtn);
+    }
+    
+    alert.height = customView.height + 135 * kScreenScale;
+    
+    return alert;
+}
+
++(instancetype)alertViewCustomerView:(UIView *)customerView isShowCloseBtn:(BOOL) isShow titleLab:(void (^)(UILabel *lab))titleLab greenBorderBtn:(void (^)(UIButton *btn))greenBorderBtn greenBtn:(void (^)(UIButton *btn))greenBtn
+{
+    LPAlertView *alert = [LPAlertView viewWithFrame:LPRectMake(312, 76, 400, 300) title:nil];
+    CGFloat customerViewY = 35.f * kScreenScale;
+    CGFloat customerViewHeight = customerView.height;
+    if (isShow == NO)
+    {
+        UIView *bgView = [[UIView alloc] initWithFrame:LPRectMake(350, 0, 50, 50)];
+        bgView.backgroundColor = [UIColor whiteColor];
+        [alert addSubview:bgView];
+    }
+    
+    if (titleLab)
+    {
+        UILabel *tLab = [[UILabel alloc] initWithFrame:LPRectMake(30, 25, 340, 30)];
+        tLab.textColor = kGrayColor;
+        tLab.font = kFont(24);
+        tLab.textAlignment = NSTextAlignmentLeft;
+        [alert addSubview:tLab];
+        titleLab(tLab);
+        customerViewY = 60.f;
+    }
+    
+    customerView.frame = LPRectMake(28, customerViewY, 344, customerViewHeight/kScreenScale);
+    [alert addSubview:customerView];
+    
+    if (greenBorderBtn)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, CGRectGetMaxY(customerView.frame) + 15, 160, 45) title:nil];
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        [alert addSubview:leftBtn];
+        greenBorderBtn(leftBtn);
+    }
+    if (greenBtn)
+    {
+        UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, CGRectGetMaxY(customerView.frame) + 15, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        greenBtn(rightBtn);
+    }
+    
+    alert.height = 90 * kScreenScale + CGRectGetMaxY(customerView.frame);
+    
+    return alert;
+}
+
++ (instancetype)alertViewWithMsgs:(NSArray<AlertMsg *> *)msgs iconType:(IconType)iconType greenBorderBtn:(void (^)(UIButton *))greenBorderBtn greenBtn:(void (^)(UIButton *))greenBtn{
+    
+    LPAlertView *alert = [self viewWithFrame:LPRectMake(312, 149, 400, 300) title:nil];
+    
+    UIImageView *alertIcon = [UIImageView new];
+    if (iconType == IconWarn) {
+        alertIcon.image = [UIImage imageNamed:@"warn_01"];
+    } else if (iconType == IconTick) {
+        alertIcon.image = [UIImage imageNamed:@"check_01"];
+    }
+    
+    alertIcon.frame = LPRectMake(174, 37, 52, 52);
+    [alert addSubview:alertIcon];
+
+    CGFloat totalLabHeight = 0;
+    for (NSInteger i = 0; i < msgs.count; i++) {
+        
+        AlertMsg *alertMsg = msgs[i];
+        NSString *msg;
+        if (alertMsg.msg && ![alertMsg.msg isEqualToString:@""]) {
+            msg = alertMsg.msg;
+        } else {
+            continue;
+        }
+        
+        UIColor *color = alertMsg.color ? alertMsg.color : [UIColor blackColor];
+        UIFont *font = alertMsg.font ? alertMsg.font : kFont(24);
+        CGFloat lineSpace = alertMsg.lineSpace ? alertMsg.lineSpace : 10;
+        
+        UILabel *lab = [UILabel new];
+        lab.text = msg;
+        lab.font = font;
+        lab.textColor = color;
+        lab.frame = LPRectMake(50, 110 + totalLabHeight / kScreenScale, 300, 0);
+        lab.numberOfLines = 0;
+        lab.textAlignment = NSTextAlignmentCenter;
+        [lab setLineSpace:lineSpace];
+        [alert addSubview:lab];
+        CGFloat labHeight = [lab sizeThatFits:LPSizeMake(300, CGFLOAT_MAX)].height;
+        lab.height = labHeight;
+
+        totalLabHeight += labHeight + kScaleNum(16);//!<加上行间距
+    }
+    
+    CGFloat ButtonY = 0;
+    if (kScaleNum(110) + totalLabHeight >= kScaleNum(200)) {
+        ButtonY = 110 + totalLabHeight / kScreenScale + 25;
+    } else {
+        ButtonY = 225;
+    }
+
+    if (greenBorderBtn)
+    {
+        UIButton *leftBtn = [UIButton greenBorderBtnWithFrame:LPRectMake(27, ButtonY, 160, 45) title:nil];
+        [leftBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        [alert addSubview:leftBtn];
+        greenBorderBtn(leftBtn);
+    }
+    if (greenBtn)
+    {
+        UIButton *rightBtn = [UIButton greenBtnWithFrame:LPRectMake(213, ButtonY, 160, 45) title:nil];
+        [alert addSubview:rightBtn];
+        [rightBtn addTarget:alert action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+        greenBtn(rightBtn);
+    }
+    
+    if (kScaleNum(110) + totalLabHeight >= kScaleNum(200)) {
+        alert.height = kScaleNum(110) + totalLabHeight + kScaleNum(100);
+    } else {
+        //默认高度最小300
+    }
+
+    return alert;
+}
+
+- (void)showAndAutoRemovedAfterSecond:(NSTimeInterval)interval
+{
+    [self showWithAnimation];
+    [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:interval];
+}
+
+@end
+
+@implementation AlertMsg
+
+
+
+@end

@@ -1,0 +1,15 @@
+//
+//  HMBasicVC+HMLeftView.h
+//  HotelManager-Pad
+//
+//  Created by r on 16/12/15.
+//  Copyright © 2016年 塞米酒店. All rights reserved.
+//
+
+#import "HMBasicVC.h"
+
+@interface HMBasicVC (HMLeftView)
+
+- (void)initLeftViewWithModel:(id)model;
+
+@end

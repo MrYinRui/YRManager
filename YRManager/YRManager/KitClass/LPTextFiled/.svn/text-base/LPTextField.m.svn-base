@@ -1,0 +1,229 @@
+//
+//  LPTextField.m
+//  Lodger-Pad
+//
+//  Created by xun on 10/20/16.
+//  Copyright © 2016 xun. All rights reserved.
+//
+
+#import "LPTextField.h"
+
+#define kValidCodeMaxLength     6
+#define kUserPwdMaxLength       16
+#define kUserPwdMinLength       6
+
+@implementation LPTextField
+
+- (BOOL)validString:(NSString *)str
+{
+    [NSException raise:NSInvalidArgumentException format:@"不可直接使用%s，需要子类实现", __func__];
+    
+    return NO;
+}
+
+- (void)drawTextInRect:(CGRect)rect
+{
+    if (CGRectEqualToRect(_textRect, CGRectZero))
+    {
+        [super drawTextInRect:CGRectInset(rect, 8, 0)];
+    }
+    else
+    {
+        [super drawTextInRect:_textRect];
+    }
+}
+
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
+{
+    if (CGRectEqualToRect(_textRect, CGRectZero))
+    {
+        return CGRectInset(bounds, 8, 0);;
+    }
+    else
+    {
+        return _textRect;
+    }
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds
+{
+    if (CGRectEqualToRect(_textRect, CGRectZero))
+    {
+        return CGRectInset(bounds, 8, 0);
+    }
+    else
+    {
+        return _textRect;
+    }
+}
+
+- (LPTextField *(^)(CGRect))b_textRect
+{
+    return ^(CGRect rect){
+    
+        self.textRect = rect;
+        
+        return self;
+    };
+}
+
+@end
+
+@implementation LPValidCodeTF
+
+- (BOOL)validString:(NSString *)str
+{
+    if(str)
+    {
+        if (self.text.length + str.length > kValidCodeMaxLength)
+        {
+            return NO;
+        }
+        else
+        {
+            NSString *regularStr = [NSString stringWithFormat:@"^[0-9]{%ld}$", str.length];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+            return [predicate evaluateWithObject:str];
+        }
+    }
+    else
+    {
+        NSString *regularStr = [NSString stringWithFormat:@"^[0-9]{4,6}$"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+        return [predicate evaluateWithObject:self.text];
+    }
+}
+
+@end
+
+
+@implementation LPPhoneTF
+
+- (BOOL)validString:(NSString *)str
+{
+    NSString *regularStr = nil;
+    NSPredicate *predicate = nil;
+    
+    if(str)
+    {
+        if (self.text.length + str.length > 11)
+        {
+            return NO;
+        }
+        else
+        {
+            regularStr = [NSString stringWithFormat:@"^[0-9]{%ld}$", str.length];
+            predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+            return [predicate evaluateWithObject:str];
+        }
+    }
+    else
+    {
+        regularStr = @"^1[3-9][0-9]{9}$";
+        predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+        return [predicate evaluateWithObject:self.text];
+    }
+}
+
+@end
+
+
+@implementation LPPwdTF
+
+- (BOOL)validString:(NSString *)str
+{
+    if(str)
+    {
+        if (self.text.length + str.length > kUserPwdMaxLength)
+        {
+            return NO;
+        }
+        else
+        {
+            NSString *regularStr = [NSString stringWithFormat:@"^[0-9A-Za-z]{%ld}$", str.length];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+            return [predicate evaluateWithObject:str];
+        }
+    }
+    else
+    {
+        NSString *regularStr = [NSString stringWithFormat:@"^[0-9A-Za-z]{%d,%d}$", kUserPwdMinLength, kUserPwdMaxLength];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularStr];
+        return [predicate evaluateWithObject:str];
+    }
+}
+
+@end
+
+@implementation LPIPTF
+
+- (BOOL)validString:(NSString *)str
+{
+    NSString *regular = @"^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$";
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regular];
+    
+    if (![predicate evaluateWithObject:self.text])
+    {
+        return NO;
+    }
+    
+    return [self isValidIPString:self.text];
+}
+
+- (BOOL)isValidIPString:(NSString *)str
+{
+    NSArray *subStrs = [str componentsSeparatedByString:@"."];
+    
+    for (NSString *subStr in subStrs)
+    {
+        if (subStr.intValue > 255 || subStr.intValue < 0)
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+@end
+
+@implementation LPNumberTF
+
+- (BOOL)validString:(NSString *)str
+{
+    NSString *regular = @"^[0-9]{1,}";
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regular];
+    
+    if (str.length)
+    {
+        return [predicate evaluateWithObject:str];
+    }
+    else
+    {
+        return [predicate evaluateWithObject:self.text];
+    }
+}
+
+@end
+
+@implementation LPWordTF
+
+- (BOOL)validString:(NSString *)str
+{
+    if (str)
+    {
+        return YES;
+    }
+    else
+    {
+        //  判断全部为空格
+        NSString *regular = @"[ ]{0,}$";
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regular];
+        
+        return ![predicate evaluateWithObject:self.text];
+    }
+}
+
+@end

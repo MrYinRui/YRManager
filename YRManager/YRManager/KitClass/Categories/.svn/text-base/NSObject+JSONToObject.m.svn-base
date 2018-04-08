@@ -1,0 +1,293 @@
+//
+//  NSObject+JSONToObject.m
+//  OCDemo
+//
+//  Created by xun on 16/6/16.
+//  Copyright © 2016年 xun. All rights reserved.
+//
+
+#import "NSObject+JSONToObject.h"
+#import <objc/runtime.h>
+#import "JsonToObjectProtocol.h"
+
+@implementation NSObject (JSONToObject)
+
++ (instancetype)objectFromDataObject:(id)dataObj
+{
+    if ([dataObj isKindOfClass:[NSArray class]])
+    {
+        return [self arrayFromJsonObj:dataObj originArray:nil];
+    }
+    else if([dataObj isKindOfClass:[NSDictionary class]])
+    {
+        return [self objectFromJsonObj:dataObj originObj:nil];
+    }
+    else
+        return dataObj;
+}
+
++ (NSArray *)arrayFromJsonObj:(id)jsonObj
+                  originArray:(NSMutableArray *)arr
+{
+    if (!arr || [arr isKindOfClass:[NSNull class]])
+    {
+        arr = [NSMutableArray array];
+    }
+    
+    for (id obj in jsonObj)
+    {
+        if ([obj isKindOfClass:[NSNull class]])
+        {
+            continue;
+        }
+        else if ([obj isKindOfClass:[NSArray class]])
+        {
+            [arr addObject:[self arrayFromJsonObj:obj originArray:nil]];
+        }
+        else if ([obj isKindOfClass:[NSDictionary class]])
+        {
+            [arr addObject:[self objectFromJsonObj:obj originObj:nil]];
+        }
+        else
+        {
+            [arr addObject:obj];
+        }
+    }
+    return arr;
+}
+
++ (id)objectFromJsonObj:(id)jsonObj originObj:(id)obj
+{
+    if (!obj || [obj isKindOfClass:[NSDictionary class]])
+    {
+        obj = [self new];
+    }
+    
+    NSDictionary *propertyAttribute = [self propertyAttributeDict];
+    
+    for (NSString *key in [jsonObj allKeys])
+    {
+        NSString *property = [self replaceKeyDict][key];
+        
+        if (!property || !property.length)
+        {
+            property = key;
+        }
+        id subObj = jsonObj[key];
+        
+        if([subObj isKindOfClass:[NSNull class]])
+        {
+            continue;
+        }
+        else if ([subObj isKindOfClass:[NSDictionary class]])
+        {
+            Class class = [self propertyClassDict][property];
+            
+            id origin = [obj valueForKey:property];
+            
+            id value;
+            
+            if (class == nil)
+            {
+                value = jsonObj[key];
+            }
+            else
+            {
+                value = [class objectFromJsonObj:subObj originObj:origin];
+            }
+            
+            [obj setValue:value forKey:property];
+        }
+        else if ([subObj isKindOfClass:[NSArray class]])
+        {
+            Class class = [self propertyClassDict][property];
+            
+            id origin = [obj valueForKey:property];
+            
+            id value = [class arrayFromJsonObj:subObj originArray:origin];
+            
+            [obj setValue:value forKey:property];
+        }
+        else
+        {
+            if ([propertyAttribute[property] isEqualToString:@"NSString"])
+            {
+                [obj setValue:[NSString stringWithFormat:@"%@", subObj] forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"c"])
+            {
+                [obj setValue:@([subObj boolValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"i"] ||
+                     [propertyAttribute[property] isEqualToString:@"S"] ||
+                     [propertyAttribute[property] isEqualToString:@"s"])
+            {
+                [obj setValue:@([subObj intValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"q"] ||
+                     [propertyAttribute[property] isEqualToString:@"I"])
+            {
+                [obj setValue:@([subObj longLongValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"d"])
+            {
+                [obj setValue:@([subObj doubleValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"f"])
+            {
+                [obj setValue:@([subObj floatValue]) forKey:property];
+            }
+            else
+            {
+                [obj setValue:subObj forKey:property];
+            }
+        }
+    }
+    
+    return obj;
+
+}
+
+/*
++ (NSArray *)arrayFromDataObject:(id)dataObj
+{
+    NSMutableArray *array = [NSMutableArray new];
+    
+    for (id obj in dataObj)
+    {
+        if ([obj isKindOfClass:[NSNull class]])
+        {
+            continue;
+        }
+        else if ([obj isKindOfClass:[NSArray class]])
+        {
+            [array addObject:[self arrayFromDataObject:obj]];
+        }
+        else if ([obj isKindOfClass:[NSDictionary class]])
+        {
+            [array addObject:[self objectFromDictionary:obj]];
+        }
+        else
+        {
+            [array addObject:obj];
+        }
+    }
+    return array;
+}
+
++ (id)objectFromDictionary:(NSDictionary *)dict
+{
+    id obj = [self new];
+    
+    NSDictionary *propertyAttribute = [self propertyAttributeDict];
+    
+    for (NSString *key in [dict allKeys])
+    {
+        NSString *property = [self replaceKeyDict][key];
+        
+        if (!property || !property.length)
+        {
+            property = key;
+        }
+        id subObj = dict[key];
+        
+        if([subObj isKindOfClass:[NSNull class]])
+        {
+            continue;
+        }
+        else if ([subObj isKindOfClass:[NSDictionary class]])
+        {
+            [obj setValue:[[self propertyClassDict][property] objectFromDictionary:subObj] forKey:property];
+        }
+        else if ([subObj isKindOfClass:[NSArray class]])
+        {
+            [obj setValue:[[self propertyClassDict][property] arrayFromDataObject:subObj]  forKey:property];
+        }
+        else
+        {
+            if ([propertyAttribute[property] isEqualToString:@"NSString"])
+            {
+                [obj setValue:[NSString stringWithFormat:@"%@", subObj] forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"c"])
+            {
+                [obj setValue:@([subObj boolValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"i"] ||
+                     [propertyAttribute[property] isEqualToString:@"S"] ||
+                     [propertyAttribute[property] isEqualToString:@"s"])
+            {
+                [obj setValue:@([subObj intValue]) forKey:property];
+            }
+            else if ([propertyAttribute[property] isEqualToString:@"q"] ||
+                     [propertyAttribute[property] isEqualToString:@"I"])
+            {
+                [obj setValue:@([subObj longLongValue]) forKey:property];
+            }
+            else
+            {
+                [obj setValue:subObj forKey:property];
+            }
+        }
+    }
+
+    return obj;
+}
+*/
+
++ (NSDictionary *)propertyClassDict
+{
+    return nil;
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    
+}
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    return nil;
+}
+
++ (NSDictionary *)replaceKeyDict
+{
+    return nil;
+}
+
++ (NSDictionary *)propertyAttributeDict
+{
+    unsigned int count = 0;
+    
+    objc_property_t *properties = class_copyPropertyList(self, &count);
+    
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    
+    for (int i = 0; i < count; i++)
+    {
+        NSString *str = [[NSString alloc] initWithUTF8String:property_getAttributes(properties[i])];
+    
+        NSArray *arr = [str componentsSeparatedByString:@","];
+        
+        NSString *propertyName = [arr.lastObject stringByReplacingOccurrencesOfString:@"V_" withString:@""];
+        
+        NSString *typeName = nil;
+        
+        if ([arr.firstObject containsString:@"@"])
+        {
+            typeName = [arr[0] stringByReplacingOccurrencesOfString:@"T@\"" withString:@""];
+            typeName = [typeName stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        }
+        else
+        {
+            typeName = [arr[0] stringByReplacingOccurrencesOfString:@"T" withString:@""];
+        }
+        
+        dict[propertyName] = typeName;
+    }
+    
+    return dict;
+}
+
+@end
+

@@ -1,0 +1,78 @@
+//
+//  NSUserDefaults+LPUserInfo.m
+//  Lodger-Pad
+//
+//  Created by xun on 9/24/16.
+//  Copyright © 2016 xun. All rights reserved.
+//
+
+#import "NSUserDefaults+LPUserInfo.h"
+#import "HMMainVC.h"
+
+#define kLoginStatusKey @"LOGIN_STATUS_KEY"
+
+#define kServerInfoKey  @"SERVER_INFO_KEY"
+#define kHotelHostKey   @"HOTEL_HOST_KEY"
+#define kHotelPortKey   @"HOTEL_PORT_KEY"
+#define kHotelCsIdKey   @"HOTEL_CSID_KEY"
+
+
+
+@implementation NSUserDefaults (LPUserInfo)
+
++ (LPLoginStatus)loginStatus
+{
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:kLoginStatusKey] intValue];
+}
+
++ (void)setLoginStatus:(LPLoginStatus)status
+{
+    if (status != [NSUserDefaults loginStatus])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:LPNotiLoginStatusChanged
+                                                                object:nil
+                                                              userInfo:@{LPNotiLoginStatusKey:@(status)}];
+        });
+        
+        [[NSUserDefaults standardUserDefaults] setValue:@(status) forKey:kLoginStatusKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
+@end
+
+@implementation NSUserDefaults (LPHotelInfo)
+
++ (void)saveHotelHost:(NSString *)IP port:(NSString *)port
+{
+    NSDictionary *dict = @{kHotelHostKey:IP, kHotelPortKey:port};
+    
+    [[NSUserDefaults standardUserDefaults] setValue:dict forKey:kServerInfoKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)saveHotelCsId:(NSString *)csId
+{
+    [[NSUserDefaults standardUserDefaults] setValue:csId forKey:kHotelCsIdKey];
+}
+
++ (NSString *)hotelHost
+{
+//    return [[kUserDefault valueForKey:kServerInfoKey] valueForKey:kHotelHostKey];
+    return @"192.168.1.66";
+}
+
++ (NSString *)hotelPort
+{
+//    return [[kUserDefault valueForKey:kServerInfoKey] valueForKey:kHotelPortKey];
+    return @"8888";
+}
+
++ (NSString *)hotelCsId
+{
+    return [kUserDefault valueForKey:kHotelCsIdKey];
+}
+
+@end

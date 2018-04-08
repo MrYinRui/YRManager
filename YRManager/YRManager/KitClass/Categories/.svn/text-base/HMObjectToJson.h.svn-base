@@ -1,0 +1,19 @@
+//
+//  Object2Json.h
+//  HotelManager-Pad
+//
+//  Created by YR on 17/2/7.
+//  Copyright © 2017年 塞米酒店. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface HMObjectToJson : NSObject
+
++ (NSDictionary*)getObjectData:(id)obj;
+
++ (NSData*)getJSON:(id)obj options:(NSJSONWritingOptions)options error:(NSError**)error;
+
++ (id)getObjectInternal:(id)obj;
+
+@end
